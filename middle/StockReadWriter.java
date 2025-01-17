@@ -26,7 +26,7 @@ public interface StockReadWriter extends StockReader
    * @param amount Quantity of product
    * @throws middle.StockException if issue
    */
-  void addStock(String pNum, int amount) throws StockException;
+  boolean addStock(String pNum, int amount) throws StockException;
   
   /**
    * Modifies Stock details for a given product number.

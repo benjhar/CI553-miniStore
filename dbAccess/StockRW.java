@@ -32,7 +32,7 @@ public class StockRW extends StockR implements StockReadWriter
     super();        // Connection done in StockR's constructor
   }
   
-  static final String digitsRegex = "[0-9]";
+  static final String digitsRegex = "[0-9]+";
   
   /**
    * Customer buys stock, quantity decreased if successful.
@@ -53,7 +53,7 @@ public class StockRW extends StockR implements StockReadWriter
 	        "       where productNo = '" + pNum + "' and " +
 	        "             stockLevel >= " + amount + ""
 	      );
-	      updates = 1; // getStatementObject().getUpdateCount();
+	      updates = getStatementObject().getUpdateCount();
 	    } catch ( SQLException e )
 	    {
 	      throw new StockException( "SQL buyStock: " + e.getMessage() );
@@ -69,7 +69,7 @@ public class StockRW extends StockR implements StockReadWriter
    * @param pNum Product number
    * @param amount Amount of stock to add
    */
-  public synchronized void addStock( String pNum, int amount )
+  public synchronized boolean addStock( String pNum, int amount )
          throws StockException
   {
 	if (pNum.matches(digitsRegex)) {
@@ -85,6 +85,9 @@ public class StockRW extends StockR implements StockReadWriter
 	    {
 	      throw new StockException( "SQL addStock: " + e.getMessage() );
 	    }
+	    return true;
+	} else {
+		return false;
 	}
   }
 

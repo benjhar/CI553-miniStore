@@ -77,14 +77,14 @@ public class F_StockRW extends F_StockR
    * @throws StockException if remote exception
    */
 
-  public void addStock( String number, int amount )
+  public boolean addStock( String number, int amount )
          throws StockException
   {
     DEBUG.trace("F_StockRW:addStock()" );
     try
     {
       if ( aR_StockRW == null ) connect();
-      aR_StockRW.addStock( number, amount );
+      return aR_StockRW.addStock( number, amount );
     } catch ( RemoteException e )
     {
       aR_StockRW = null;

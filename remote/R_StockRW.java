@@ -97,10 +97,10 @@ public class      R_StockRW
    * @param amount Quantity
    * @throws middle.StockException if underlying error
    */
-  public synchronized void addStock( String pNum, int amount )
+  public synchronized boolean addStock( String pNum, int amount )
          throws StockException
   {
-    aStockRW.addStock( pNum, amount );
+    return aStockRW.addStock( pNum, amount );
   }
 
 

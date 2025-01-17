@@ -35,7 +35,7 @@ public class StockRW extends StockR implements StockReadWriter
   static final String digitsRegex = "[0-9]";
   
   /**
-   * Customer buys stock, quantity decreased if sucessful.
+   * Customer buys stock, quantity decreased if successful.
    * @param pNum Product number
    * @param amount Amount of stock bought
    * @return true if succeeds else false

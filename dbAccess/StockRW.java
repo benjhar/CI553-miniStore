@@ -32,6 +32,8 @@ public class StockRW extends StockR implements StockReadWriter
     super();        // Connection done in StockR's constructor
   }
   
+  static final String digitsRegex = "[0-9]";
+  
   /**
    * Customer buys stock, quantity decreased if sucessful.
    * @param pNum Product number
@@ -43,20 +45,22 @@ public class StockRW extends StockR implements StockReadWriter
   {
     DEBUG.trace("DB StockRW: buyStock(%s,%d)", pNum, amount);
     int updates = 0;
-    try
-    {
-      getStatementObject().executeUpdate(
-        "update StockTable set stockLevel = stockLevel-" + amount +
-        "       where productNo = '" + pNum + "' and " +
-        "             stockLevel >= " + amount + ""
-      );
-      updates = 1; // getStatementObject().getUpdateCount();
-    } catch ( SQLException e )
-    {
-      throw new StockException( "SQL buyStock: " + e.getMessage() );
+    if (pNum.matches(digitsRegex)) {
+	    try
+	    {
+	      getStatementObject().executeUpdate(
+	        "update StockTable set stockLevel = stockLevel-" + amount +
+	        "       where productNo = '" + pNum + "' and " +
+	        "             stockLevel >= " + amount + ""
+	      );
+	      updates = 1; // getStatementObject().getUpdateCount();
+	    } catch ( SQLException e )
+	    {
+	      throw new StockException( "SQL buyStock: " + e.getMessage() );
+	    }
     }
     DEBUG.trace( "buyStock() updates -> %n", updates );
-    return updates > 0;   // sucess ?
+    return updates > 0;   // success ?
   }
 
   /**
@@ -68,18 +72,20 @@ public class StockRW extends StockR implements StockReadWriter
   public synchronized void addStock( String pNum, int amount )
          throws StockException
   {
-    try
-    {
-      getStatementObject().executeUpdate(
-        "update StockTable set stockLevel = stockLevel + " + amount +
-        "         where productNo = '" + pNum + "'"
-      );
-      //getConnectionObject().commit();
-      DEBUG.trace( "DB StockRW: addStock(%s,%d)" , pNum, amount );
-    } catch ( SQLException e )
-    {
-      throw new StockException( "SQL addStock: " + e.getMessage() );
-    }
+	if (pNum.matches(digitsRegex)) {
+	    try
+	    {
+	      getStatementObject().executeUpdate(
+	        "update StockTable set stockLevel = stockLevel + " + amount +
+	        "         where productNo = '" + pNum + "'"
+	      );
+	      //getConnectionObject().commit();
+	      DEBUG.trace( "DB StockRW: addStock(%s,%d)" , pNum, amount );
+	    } catch ( SQLException e )
+	    {
+	      throw new StockException( "SQL addStock: " + e.getMessage() );
+	    }
+	}
   }
 
 

@@ -119,13 +119,13 @@ class OrderTest {
 	void testOrderState() throws OrderException {
 		Map<String, List<Integer>> state;
 		state = order.getOrderState();
-		if (!state.get("Waiting").isEmpty()) {
+		if (state.get("Waiting") != null && !state.get("Waiting").isEmpty()) {
 			fail("Should be no waiting orders");
 		}
-		if (!state.get("BeingPacked").isEmpty()) {
+		if (state.get("BeingPacked") != null && !state.get("BeingPacked").isEmpty()) {
 			fail("Should be no beingpacked orders");
 		}
-		if (!state.get("ToBeCollected").isEmpty()) {
+		if (state.get("ToBeCollected") != null && !state.get("ToBeCollected").isEmpty()) {
 			fail("Should be no toBeCollected orders");
 		}
 		
@@ -139,27 +139,27 @@ class OrderTest {
 		order.getOrderToPack();
 		state = order.getOrderState();
 		
-		if (state.get("BeingPacked").isEmpty()) {
+		if (state.get("BeingPacked") != null && state.get("BeingPacked").isEmpty()) {
 			fail("bought should be being packed");
 		}
-		if (!state.get("Waiting").isEmpty()) {
+		if (state.get("Waiting") != null && !state.get("Waiting").isEmpty()) {
 			fail("Should be no waiting orders");
 		}
-		
+	    
 		order.informOrderPacked(bought.getOrderNum());
 		state = order.getOrderState();
 
-		if (state.get("ToBeCollected").isEmpty()) {
+		if (state.get("ToBeCollected") != null && state.get("ToBeCollected").isEmpty()) {
 			fail("bought should be no to-be-collected");
 		}
-		if (!state.get("BeingPacked").isEmpty()) {
+		if (state.get("BeingPacked") != null && !state.get("BeingPacked").isEmpty()) {
 			fail("Should be no beingpacked orders");
 		}
 		
 		order.informOrderCollected(bought.getOrderNum());
 		state = order.getOrderState();
 
-		if (!state.get("ToBeCollected").isEmpty()) {
+		if (state.get("ToBeCollected") != null && !state.get("ToBeCollected").isEmpty()) {
 			fail("Should be no toBeCollected orders");
 		}
 	}
